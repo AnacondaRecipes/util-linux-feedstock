@@ -52,7 +52,11 @@ about:
   dev_url: https://github.com/util-linux/util-linux
 
 extra:
+  anaconda-services:
+    ref: https://anaconda.zendesk.com/agent/tickets/47182
+    reason: Dependency for systemd
   recipe-maintainers:
+    - ianaobi
     - jaimergp
     - scopatz
     - hmaarrfk
