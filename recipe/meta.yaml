@@ -42,8 +42,6 @@ test:
   commands:
     - test -f "${PREFIX}/lib/libmount.so"  # [linux]
     - test -f "${PREFIX}/bin/hexdump"
-  imports:
-    - util-linux
 
 about:
   home: https://en.wikipedia.org/wiki/Util-linux
