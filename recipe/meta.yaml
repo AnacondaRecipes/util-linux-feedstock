@@ -59,6 +59,7 @@ extra:
     reason: Dependency for systemd
   recipe-maintainers:
     - ianaobi
+    - bkreider
     - jaimergp
     - scopatz
     - hmaarrfk
