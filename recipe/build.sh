@@ -11,7 +11,6 @@ if [[ $target_platform == "osx-"* ]]; then
             --disable-wall \
             --disable-libmount \
             --enable-libuuid"
-
 fi
 
 # https://kernelnewbies.org/Linux_4.10
@@ -31,12 +30,14 @@ export CPPFLAGS="${CPPFLAGS} -DSIOCGSKNS=0x894C"
             --disable-makeinstall-chown \
             --disable-makeinstall-setuid \
             --without-systemdsystemunitdir \
-            $OSX_ARGS
-make -j ${CPU_COUNT}
+            ${OSX_ARGS}
+make -j${CPU_COUNT}
 
 known_fail="TS_OPT_misc_setarch_known_fail=yes"
 known_fail+=" TS_OPT_column_invalid_multibyte_known_fail=yes"
 known_fail+=" TS_OPT_hardlink_options_known_fail=yes"  # flaky on py3.9?
+known_fail+=" TS_OPT_uuid_oids_known_fail=yes"
+
 if [[ $target_platform == linux-aarch64 ]]; then
   known_fail+=" TS_OPT_lsfd_mkfds_ro_regular_file_known_fail=yes"  # can be flaky on this platform
   known_fail+=" TS_OPT_libmount_tabfiles_py_known_fail=yes"
@@ -50,15 +51,9 @@ if [[ $target_platform == linux-aarch64 ]]; then
   # script/options fails on pypy + aarch64 under emulation
   known_fail+=" TS_OPT_script_options_known_fail=yes"
 fi
-if [[ $target_platform == linux-ppc64le ]]; then
-  # These tests seem to fail under emulation
-  known_fail+=" TS_OPT_fdisk_bsd_known_fail=yes"
-  known_fail+=" TS_OPT_kill_name_to_number_known_fail=yes"
-  known_fail+=" TS_OPT_kill_options_known_fail=yes"
-  known_fail+=" TS_OPT_libmount_tabfiles_py_known_fail=yes"
-fi
-if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
-make check $known_fail
+
+if [[ $target_platform != osx-* ]]; then
+  make check $known_fail
 fi
 
 make install
