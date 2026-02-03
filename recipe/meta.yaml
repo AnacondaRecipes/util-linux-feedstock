@@ -7,7 +7,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v{{ major_minor }}/util-linux-{{ version }}.tar.xz
+  url: https://mirrors.edge.kernel.org/pub/linux/utils/{{ name }}/v{{ major_minor }}/{{ name }}-{{ version }}.tar.xz
   sha256: 6c4f8723dafd41c39d93ecbf16509fc88c33cd5bd3277880ae5a1d97a014fd0e
 
 build:
@@ -18,30 +18,27 @@ build:
 
 requirements:
   build:
-    - python                                 # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-    - sysroot_linux-64  2.17  # [linux64]
-    - gnuconfig  # [unix]
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
+    - python
+    - gnuconfig
     - make
     - libtool
     - autoconf
     - automake
     - pkg-config
   host:
-    - python
-    - zlib
-    - ncurses
-    - readline
-    - libuuid
-    - libxcrypt  # [linux]
-  run:
-    - python
+    - ncurses {{ ncurses }}
+    - readline {{ readline }}
+    - libuuid {{ libuuid }}
+    - sqlite {{ sqlite }}
+    - zlib {{ zlib }}
 
 test:
   commands:
-    - test -f "${PREFIX}/lib/libmount.so"  # [linux]
-    - test -f "${PREFIX}/bin/hexdump"
+    # Only linux has the library
+    - test -f ${PREFIX}/lib/libmount${SHLIB_EXT} # [linux]
+    - test -f ${PREFIX}/bin/hexdump
 
 about:
   home: https://en.wikipedia.org/wiki/Util-linux
@@ -50,6 +47,7 @@ about:
   license_file: COPYING
   summary: A random collection of Linux utilities
   dev_url: https://github.com/util-linux/util-linux
+  doc_url: https://github.com/util-linux/util-linux
 
 extra:
   recipe-maintainers:
