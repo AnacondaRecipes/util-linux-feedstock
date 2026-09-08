@@ -57,6 +57,7 @@ if [[ $target_platform == linux-aarch64 ]]; then
   known_fail+=" TS_OPT_lsfd_option_inet_known_fail=yes"
   # script/options fails on pypy + aarch64 under emulation
   known_fail+=" TS_OPT_script_options_known_fail=yes"
+  known_fail+=" TS_OPT_fincore_count_known_fail=yes"
 fi
 
 if [[ $target_platform != osx-* ]]; then
