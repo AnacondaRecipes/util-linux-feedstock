@@ -1,14 +1,17 @@
 {% set name = "util-linux" %}
-{% set version = "2.39.4" %}
+{% set version = "2.42.3" %}
 {% set major_minor = '.'.join(version.split('.')[:2]) %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://mirrors.edge.kernel.org/pub/linux/utils/{{ name }}/v{{ major_minor }}/{{ name }}-{{ version }}.tar.xz
-  sha256: 6c4f8723dafd41c39d93ecbf16509fc88c33cd5bd3277880ae5a1d97a014fd0e
+  sha256: 66ac7c0e725278eb2b039e3104f2c91119341d941b41bac7a285c695f940bd57
+  patches:
+    # https://github.com/util-linux/util-linux/commit/7e2e010874b10b3aabdc3c4c844c9ffc46a4a374
+    - add_missing_fileutils_include.patch
 
 build:
   number: 0
@@ -46,6 +49,7 @@ about:
   license_family: GPL
   license_file: COPYING
   summary: A random collection of Linux utilities
+  description: util-linux is a random collection of Linux utilities
   dev_url: https://github.com/util-linux/util-linux
   doc_url: https://github.com/util-linux/util-linux
 
